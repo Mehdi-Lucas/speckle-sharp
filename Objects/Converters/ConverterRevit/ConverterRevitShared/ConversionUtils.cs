@@ -83,6 +83,7 @@ namespace Objects.Converter.Revit
           if (obj != null)
           {
             reportObj.Update(status: ApplicationObject.State.Created, logItem: $"Attached as hosted element to {host.UniqueId}");
+            obj["hostApplicationId"] = host.UniqueId;
             convertedHostedElements.Add(obj);
             ConvertedObjectsList.Add(obj.applicationId);
           }
