@@ -37,9 +37,10 @@ namespace Speckle.Core.Models
   [AttributeUsage(AttributeTargets.Property)]
   public class Chunkable : Attribute
   {
+    public const int DEFAULT_CHUNK_SIZE = 1000;
     public int MaxObjCountPerChunk { get; set; }
 
-    public Chunkable(int ObjectsPerChunk = 1000)
+    public Chunkable(int ObjectsPerChunk = DEFAULT_CHUNK_SIZE)
     {
       MaxObjCountPerChunk = ObjectsPerChunk;
     }

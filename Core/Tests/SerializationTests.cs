@@ -4,8 +4,10 @@ using System.Drawing;
 using System.Globalization;
 using NUnit.Framework;
 using Speckle.Core.Api;
+using Speckle.Core.Kits;
 using Speckle.Core.Models;
 using Speckle.Core.Transports;
+using Speckle.Newtonsoft.Json;
 
 namespace Tests
 {
@@ -17,7 +19,7 @@ namespace Tests
     public void SimpleSerialization()
     {
       var table = new DiningTable();
-      ((dynamic)table)["@strangeVariable_NAme3"] = new TableLegFixture();
+      ((dynamic) table)["@strangeVariable_NAme3"] = new TableLegFixture();
 
       var result = Operations.Serialize(table);
       var test = Operations.Deserialize(result);
@@ -27,7 +29,7 @@ namespace Tests
       var polyline = new Polyline();
       for (int i = 0; i < 100; i++)
       {
-        polyline.Points.Add(new Point() { X = i * 2, Y = i % 2 });
+        polyline.Points.Add(new Point() {X = i * 2, Y = i % 2});
       }
 
       var strPoly = Operations.Serialize(polyline);
@@ -70,19 +72,19 @@ namespace Tests
     {
       var cat = new PolygonalFeline();
 
-      cat.Tail = new Line()
-      {
-        Start = new Point(0, 0, 0),
-        End = new Point(42, 42, 42)
-      };
+      cat.Tail = new Line() {Start = new Point(0, 0, 0), End = new Point(42, 42, 42)};
 
       for (int i = 0; i < 10; i++)
       {
-        cat.Claws[$"Claw number {i}"] = new Line { Start = new Point(i, i, i), End = new Point(i + 3.14, i + 3.14, i + 3.14) };
+        cat.Claws[$"Claw number {i}"] =
+          new Line {Start = new Point(i, i, i), End = new Point(i + 3.14, i + 3.14, i + 3.14)};
 
         if (i % 2 == 0)
         {
-          cat.Whiskers.Add(new Line { Start = new Point(i / 2, i / 2, i / 2), End = new Point(i + 3.14, i + 3.14, i + 3.14) });
+          cat.Whiskers.Add(new Line
+          {
+            Start = new Point(i / 2, i / 2, i / 2), End = new Point(i + 3.14, i + 3.14, i + 3.14)
+          });
         }
         else
         {
@@ -93,20 +95,21 @@ namespace Tests
           cat.Whiskers.Add(brokenWhisker);
         }
 
-        cat.Fur[i] = new Line { Start = new Point(i, i, i), End = new Point(i + 3.14, i + 3.14, i + 3.14) };
+        cat.Fur[i] = new Line {Start = new Point(i, i, i), End = new Point(i + 3.14, i + 3.14, i + 3.14)};
       }
 
       var result = Operations.Serialize(cat);
 
       var deserialisedFeline = Operations.Deserialize(result);
 
-      Assert.AreEqual(cat.GetId(), deserialisedFeline.GetId()); // If we're getting the same hash... we're probably fine!
+      Assert.AreEqual(cat.GetId(),
+        deserialisedFeline.GetId()); // If we're getting the same hash... we're probably fine!
     }
 
     [Test]
     public void InheritanceTests()
     {
-      var superPoint = new SuperPoint() { X = 10, Y = 10, Z = 10, W = 42 };
+      var superPoint = new SuperPoint() {X = 10, Y = 10, Z = 10, W = 42};
 
       var str = Operations.Serialize(superPoint);
       var sstr = Operations.Deserialize(str);
@@ -122,7 +125,7 @@ namespace Tests
 
       for (var i = 0; i < 100; i++)
       {
-        test.Add(new SuperPoint { W = i });
+        test.Add(new SuperPoint {W = i});
       }
 
       point["test"] = test;
@@ -130,7 +133,8 @@ namespace Tests
       var str = Operations.Serialize(point);
       var dsrls = Operations.Deserialize(str);
 
-      var list = dsrls["test"] as List<object>; // NOTE: on dynamically added lists, we cannot infer the inner type and we always fall back to a generic list<object>.
+      var
+        list = dsrls["test"] as List<object>; // NOTE: on dynamically added lists, we cannot infer the inner type and we always fall back to a generic list<object>.
       Assert.AreEqual(100, list.Count);
     }
 
@@ -140,7 +144,7 @@ namespace Tests
       var baseBasedChunk = new DataChunk();
       for (var i = 0; i < 200; i++)
       {
-        baseBasedChunk.data.Add(new SuperPoint { W = i });
+        baseBasedChunk.data.Add(new SuperPoint {W = i});
       }
 
       var stringBasedChunk = new DataChunk();
@@ -184,11 +188,11 @@ namespace Tests
         mesh.Vertices.Add(i / 2);
         customChunk.Add(i / 2);
         defaultChunk.Add(i / 2);
-        mesh.Tables.Add(new Tabletop { length = 2000 });
+        mesh.Tables.Add(new Tabletop {length = 2000});
         mesh.ArrayOfDoubles[i] = i * 3.3;
-        mesh.ArrayOfLegs[i] = new TableLeg { height = 2 + i };
+        mesh.ArrayOfLegs[i] = new TableLeg {height = 2 + i};
       }
-      
+
       mesh["@(800)CustomChunk"] = customChunk;
       mesh["@()DefaultChunk"] = defaultChunk;
 
@@ -210,9 +214,9 @@ namespace Tests
       test["@emptyDetachableList"] = new List<object>();
 
       // Note: nested empty lists should be preserved. 
-      test["nestedList"] = new List<object>() { new List<object>() { new List<object>() } };
-      test["@nestedDetachableList"] = new List<object>() { new List<object>() { new List<object>() } };
-      
+      test["nestedList"] = new List<object>() {new List<object>() {new List<object>()}};
+      test["@nestedDetachableList"] = new List<object>() {new List<object>() {new List<object>()}};
+
       var serialised = Operations.Serialize(test);
       var isCorrect =
         serialised.Contains("\"@(5)emptyChunks\":[]") &&
@@ -229,46 +233,49 @@ namespace Tests
     {
       public DateTime TestField { get; set; }
     }
+
     [Test]
     public void DateSerialisation()
     {
       var date = new DateTime(2020, 1, 14);
-      var mockBase = new DateMock{ TestField = date};
+      var mockBase = new DateMock {TestField = date};
 
       var result = Operations.Serialize(mockBase);
-      var test = (DateMock)Operations.Deserialize(result);
+      var test = (DateMock) Operations.Deserialize(result);
 
       Assert.AreEqual(date, test.TestField);
     }
-    
+
     private class GUIDMock : Base
     {
       public Guid TestField { get; set; }
     }
+
     [Test]
     public void GuidSerialisation()
     {
       var guid = Guid.NewGuid();
-      var mockBase = new GUIDMock{ TestField = guid};
+      var mockBase = new GUIDMock {TestField = guid};
 
       var result = Operations.Serialize(mockBase);
-      var test = (GUIDMock)Operations.Deserialize(result);
+      var test = (GUIDMock) Operations.Deserialize(result);
 
       Assert.AreEqual(guid, test.TestField);
     }
-    
+
     private class ColorMock : Base
     {
       public Color TestField { get; set; }
     }
+
     [Test]
     public void ColorSerialisation()
     {
       var color = Color.FromArgb(255, 4, 126, 251);
-      var mockBase = new ColorMock{ TestField = color};
+      var mockBase = new ColorMock {TestField = color};
 
       var result = Operations.Serialize(mockBase);
-      var test = (ColorMock)Operations.Deserialize(result);
+      var test = (ColorMock) Operations.Deserialize(result);
 
       Assert.AreEqual(color, test.TestField);
     }
@@ -277,15 +284,101 @@ namespace Tests
     {
       public String TestField { get; set; }
     }
+
     [Test]
     public void StringDateTimeRegression()
     {
-      var mockBase = new StringDateTimeRegressionMock { TestField = "2021-11-12T11:32:01" };
+      var mockBase = new StringDateTimeRegressionMock {TestField = "2021-11-12T11:32:01"};
 
       var result = Operations.Serialize(mockBase);
-      var test = (StringDateTimeRegressionMock)Operations.Deserialize(result);
+      var test = (StringDateTimeRegressionMock) Operations.Deserialize(result);
 
       Assert.AreEqual(mockBase.TestField, test.TestField);
+    }
+
+
+
+    [Test]
+    public void Serialisation_SetOnly()
+    {
+      const string PayLoad = "my payload";
+      var rawBase = new MockSetOnlyBase()
+      {
+        id = "",
+        MyProp = PayLoad,
+        overridenSpeckleType = typeof(MockGetSetBase).FullName,
+      };
+
+      //Current behaviour is 
+      Assert.Throws<ArgumentException>( () => Operations.Serialize(rawBase));
+
+      return;
+      // Maybe desired behaviour is
+      
+      var json = Operations.Serialize(rawBase);
+      var sut = (MockGetSetBase)Operations.Deserialize(json);
+      
+      // Expect payload to no where to be found
+      Assert.That(sut.GetDynamicMembers(), Has.Member(nameof(MockGetSetBase.MyProp)));
+      Assert.AreNotEqual(sut.MyProp, PayLoad);
+    }
+
+    
+    [Test]
+    public void Deserialisation_GetOnly()
+    {
+      const string PayLoad = "my payload";
+      var rawBase = new MockGetSetBase
+      {
+        id = "",
+        MyProp = PayLoad,
+        overridenSpeckleType = typeof(MockGetOnlyBase).FullName,
+      };
+
+      var json = Operations.Serialize(rawBase);
+      var sut = (MockGetOnlyBase) Operations.Deserialize(json);
+      
+      //Current behaviour is 
+      Assert.That(sut.GetDynamicMembers(), Has.Member(nameof(MockGetSetBase.MyProp)));
+
+      return;
+      // Maybe desired behaviour is
+      // Check that we don't end up with duplicated props
+      Assert.That(sut.GetDynamicMembers(), Has.No.Member(nameof(MockGetSetBase.MyProp)));
+      
+      // Check that our payload was never serialised
+      Assert.That(json, !Contains.Substring(PayLoad));
+      
+    }
+
+    public class MockGetSetBase : Base
+    {
+      public string MyProp { get; set; }
+      
+      //Override our speckle type so we can fake deserialisation to another type
+      [JsonIgnore] public string overridenSpeckleType { get; set; }
+      public override string speckle_type => overridenSpeckleType; 
+    }
+
+    public class MockSetOnlyBase : Base
+    {
+      public string MyProp { set => Backing = value; }
+      [JsonIgnore] public string Backing { get; set; }
+      
+      //Override our speckle type so we can fake deserialisation to another type
+      [JsonIgnore] public string overridenSpeckleType { get; set; }
+      public override string speckle_type => overridenSpeckleType; 
+    }
+
+    public class MockGetOnlyBase : Base
+    {
+      [JsonIgnore] 
+      public string MyProp { get => Backing; }
+      public string Backing { get; set; }
+      
+      //Override our speckle type so we can fake deserialisation to another type
+      [JsonIgnore] public string overridenSpeckleType { get; set; }
+      public override string speckle_type => overridenSpeckleType; 
     }
   }
 }

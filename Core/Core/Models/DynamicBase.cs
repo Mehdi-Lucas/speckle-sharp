@@ -90,10 +90,10 @@ namespace Speckle.Core.Models
 
     /// <summary>
     /// Sets and gets properties using the key accessor pattern. E.g.:
-    /// <para><pre>((dynamic)myObject)["superProperty"] = 42;</pre></para>
+    /// <para><pre>myObject["superProperty"] = 42;</pre></para>
     /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
+    /// <param name="key">property name</param>
+    /// <returns>property value</returns>
     [IgnoreTheItemAttribute]
     public object this[string key]
     {
