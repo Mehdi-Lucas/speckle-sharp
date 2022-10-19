@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Objects;
-using Objects.Geometry;
-using Speckle.Core.Kits;
+using Speckle.Core.Api;
 using Speckle.Core.Models;
 
 namespace Tests
@@ -15,7 +12,7 @@ namespace Tests
   [TestFixture]
   public class GenericTests
   {
-    public static IEnumerable AvailableTypesInKit()
+    public static IEnumerable<Type> AvailableTypesInKit()
     {
       // Get all types in the Objects assembly that inherit from Base
       return Assembly.GetAssembly(typeof(ObjectsKit))
@@ -30,5 +27,23 @@ namespace Tests
       var constructor = t.GetConstructor(Type.EmptyTypes);
       Assert.That(constructor, Is.Not.Null);
     }
+    public static IEnumerable<Type> ConcretePublicTypes() => AvailableTypesInKit().Where(t => !t.IsAbstract && t.IsVisible);
+    
+    [Test(Description = "Check all objects can serialise and deserialise")]
+    [TestCaseSource(nameof(ConcretePublicTypes))]
+    public void ObjectCanSerializeDeserialize(Type t)
+    {
+      Base objIn = (Base)Activator.CreateInstance(t);
+      
+      string json = Operations.Serialize(objIn);
+      Assert.NotNull(json);
+
+      Base objOut = Operations.Deserialize(json);
+      Assert.NotNull(objOut);
+      Assert.That(objOut, Is.TypeOf(t));
+      
+      Assert.AreEqual(objOut.GetId(), objIn.GetId());
+    }
+    
   }
 }
