@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 using Speckle.Core.Models;
 
 namespace Tests.BaseTests
@@ -64,10 +65,15 @@ namespace Tests.BaseTests
       Assert.That(names, Has.Member(nameof(@base.attachedProp)));
     }
 
-    [Test]
-    public void ShallowCopy()
+
+    private static readonly Base[] ShallowCopyTestSource = {
+      new SampleObject(), 
+      new SampleObject() {crazyProp = "1234"},
+    };
+    
+    [Test, TestCaseSource(nameof(ShallowCopyTestSource))]
+    public void ShallowCopy(Base sample)
     {
-      var sample = new SampleObject();
       var copy = sample.ShallowCopy();
 
       var selectedMembers = DynamicBaseMemberType.Dynamic

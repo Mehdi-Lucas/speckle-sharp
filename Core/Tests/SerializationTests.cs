@@ -308,19 +308,8 @@ namespace Tests
         MyProp = PayLoad,
         overridenSpeckleType = typeof(MockGetSetBase).FullName,
       };
-
-      //Current behaviour is 
+      
       Assert.Throws<ArgumentException>( () => Operations.Serialize(rawBase));
-
-      return;
-      // Maybe desired behaviour is
-      
-      var json = Operations.Serialize(rawBase);
-      var sut = (MockGetSetBase)Operations.Deserialize(json);
-      
-      // Expect payload to no where to be found
-      Assert.That(sut.GetDynamicMembers(), Has.Member(nameof(MockGetSetBase.MyProp)));
-      Assert.AreNotEqual(sut.MyProp, PayLoad);
     }
 
     

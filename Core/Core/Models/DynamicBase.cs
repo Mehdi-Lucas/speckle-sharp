@@ -236,7 +236,10 @@ namespace Speckle.Core.Models
                    (!includeMembers.HasFlag(DynamicBaseMemberType.Obsolete) && hasObsolete));
         });
         foreach (var pi in pinfos)
-          dic.Add(pi.Name, pi.GetValue(this));
+        {
+          if(!dic.ContainsKey(pi.Name))
+            dic.Add(pi.Name, pi.GetValue(this));
+        }
       }
 
       return dic;
