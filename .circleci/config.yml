@@ -33,14 +33,14 @@ jobs:
             - path-filtering/set-parameters:
                 mapping: |
                   Core/.* core true
-                  (Core|Objects|ConnectorRhino|ConnectorGrasshopper|.*/ConverterRhinoGh)/.* rhino true
-                  (Core|Objects|ConnectorRevit|.*/ConverterRevit)/.* revit true
+                  (Core|Objects|DesktopUI2|ConnectorRhino|ConnectorGrasshopper|.*/ConverterRhinoGh)/.* rhino true
+                  (Core|Objects|DesktopUI2|ConnectorRevit|.*/ConverterRevit)/.* revit true
                   (Core|Objects|ConnectorDynamo|.*/ConverterDynamo)/.* dynamo true
-                  (Core|Objects|ConnectorAutocadCivil|.*/ConverterAutocadCivil)/.* autocadcivil true
-                  (Core|Objects|ConnectorCSI|.*/ConverterCSI)/.* csi true
-                  (Core|Objects|ConnectorMicroStation|.*/ConverterMicroStation)/.* microstation true
-                  (Core|Objects|ConnectorTeklaStructures|.*/ConverterTeklaStructures)/.* teklastructures true
-                  (Core|Objects|ConnectorArchicad)/.* archicad true
+                  (Core|Objects|DesktopUI2|ConnectorAutocadCivil|.*/ConverterAutocadCivil)/.* autocadcivil true
+                  (Core|Objects|DesktopUI2|ConnectorCSI|.*/ConverterCSI)/.* csi true
+                  (Core|Objects|DesktopUI2|ConnectorMicroStation|.*/ConverterMicroStation)/.* microstation true
+                  (Core|Objects|DesktopUI2|ConnectorTeklaStructures|.*/ConverterTeklaStructures)/.* teklastructures true
+                  (Core|Objects|DesktopUI2|ConnectorArchicad)/.* archicad true
                 base-revision: main
                 output-path: .circleci/scripts/parameters.json
       - run: cat .circleci/scripts/parameters.json
