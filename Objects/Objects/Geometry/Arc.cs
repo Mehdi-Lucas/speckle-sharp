@@ -119,6 +119,7 @@ namespace Objects.Geometry
             applicationId
             )
         { }
+        
         /// <summary>
         /// Initialise an `Arc` using a plane, the arc angle and the start and end points.
         /// The radius, midpoint, start angle, and end angle will be calculated.
