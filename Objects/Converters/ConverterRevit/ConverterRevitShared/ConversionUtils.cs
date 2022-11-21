@@ -399,7 +399,7 @@ namespace Objects.Converter.Revit
       // NOTE: we are using the ParametersMap here and not Parameters, as it's a much smaller list of stuff and 
       // Parameters most likely contains extra (garbage) stuff that we don't need to set anyways
       // so it's a much faster conversion. If we find that's not the case, we might need to change it in the future
-      var revitParameters = revitElement.ParametersMap.Cast<DB.Parameter>().Where(x => x != null && !x.IsReadOnly);
+      var revitParameters = revitElement.ParametersMap.Cast<DB.Parameter>().Where(x => x != null && !x.IsReadOnly && x.UserModifiable);
 
       // Here we are creating two  dictionaries for faster lookup
       // one uses the BuiltInName / GUID the other the name as Key
@@ -455,20 +455,24 @@ namespace Objects.Converter.Revit
               }
               break;
 
-            case StorageType.Integer:
-              rp.Set(Convert.ToInt32(sp.value));
-              break;
+            //case StorageType.Integer:
+            //  rp.Set(Convert.ToInt32(sp.value));
+            //  break;
 
             case StorageType.String:
+              //continue;
+              if (!(sp.value is string value) || string.IsNullOrEmpty(value))
+                continue;
+
               if (rp.Definition.Name.ToLower().Contains("name"))
               {
-                var temp = Regex.Replace(Convert.ToString(sp.value), "[^0-9a-zA-Z ]+", "");
+                var temp = Regex.Replace(value, "[^0-9a-zA-Z ]+", "");
                 Report.Log($@"Invalid characters in param name '{rp.Definition.Name}': Renamed to '{temp}'");
                 rp.Set(temp);
               }
               else
               {
-                rp.Set(Convert.ToString(sp.value));
+                rp.Set(value);
               }
               break;
             default:
