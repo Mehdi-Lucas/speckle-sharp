@@ -200,6 +200,8 @@ namespace Objects.Converter.Revit
 
       var state = isUpdate ? ApplicationObject.State.Updated : ApplicationObject.State.Created;
       appObj.Update(status: state, createdId: familyInstance.UniqueId, convertedItem: familyInstance);
+
+      appObj = SetHostedElements(speckleFi, familyInstance, appObj);
       return appObj;
     }
 
