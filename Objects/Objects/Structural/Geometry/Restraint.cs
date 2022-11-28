@@ -8,13 +8,51 @@ namespace Objects.Structural.Geometry
 {
     public class Restraint : Base
     {
-        public string code { get; set; } //a string to describe the restraint type for each degree of freedom - ex. FFFRRR (pin) / FFFFFF (fix)
+        //public string code { get; set; } // a string to describe the restraint type for each degree of freedom - ex. FFFRRR (pin) / FFFFFF (fix)
         public double stiffnessX { get; set; }
         public double stiffnessY { get; set; }
         public double stiffnessZ { get; set; }
         public double stiffnessXX { get; set; }
         public double stiffnessYY { get; set; }
         public double stiffnessZZ { get; set; }
+        
+        /// <summary>
+        /// The unit's this object's coordinates are in.
+        /// </summary>
+        public bool translationFixedX { get; set; }
+        public bool translationFixedY { get; set; }
+        public bool translationFixedZ { get; set; }
+        public bool rotationFixedX { get; set; }
+        public bool rotationFixedY { get; set; }
+        public bool rotationFixedZ { get; set; }
+        public string code
+        {
+          get
+          {
+            string codeString = string.Empty;
+            codeString.Insert(codeString.Length, translationFixedX ? "F" : "R");
+            codeString.Insert(codeString.Length, translationFixedY ? "F" : "R");
+            codeString.Insert(codeString.Length, translationFixedZ ? "F" : "R");
+            codeString.Insert(codeString.Length, rotationFixedX ? "F" : "R");
+            codeString.Insert(codeString.Length, rotationFixedY ? "F" : "R");
+            codeString.Insert(codeString.Length, rotationFixedZ ? "F" : "R");
+            return codeString;
+          }
+          set
+          {
+            value = value.ToUpper().Trim();
+            if (value.Length != 6)
+              return;
+            if (value.Trim('F', 'R') != "")
+              return;
+            translationFixedX = value[0] == 'F';
+            translationFixedY = value[1] == 'F';
+            translationFixedZ = value[2] == 'F';
+            rotationFixedX = value[3] == 'F';
+            rotationFixedY = value[4] == 'F';
+            rotationFixedZ = value[5] == 'F';
+          }
+        }
         public string units { get; set; }
         public Restraint() { }
 
