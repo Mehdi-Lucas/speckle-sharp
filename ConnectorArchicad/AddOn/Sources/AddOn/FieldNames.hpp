@@ -19,6 +19,7 @@ static const char* SubelementModelsFieldName = "subelementModels";
 static const char* DoorsFieldName = "doors";
 static const char* BeamsFieldName = "beams";
 static const char* ColumnsFieldName = "columns";
+static const char* ObjectsFieldName = "objects";
 static const char* SlabsFieldName = "slabs";
 static const char* ZonesFieldName = "zones";
 static const char* RoofsFieldName = "roofs";
@@ -47,7 +48,6 @@ static const char* TopOffsetFieldName = "topOffset";
 static const char* FlippedFieldName = "flipped";
 static const char* HasDoorFieldName = "hasDoor";
 static const char* HasWindowFieldName = "hasWindow";
-
 }
 
 
@@ -204,6 +204,13 @@ static const char* axisRotationAngle = "axisRotationAngle";
 static const char* relativeTopStory = "relativeTopStory";
 }
 
+namespace Object
+{
+// Main
+static const char* pos = "pos";
+}
+
+
 namespace Slab
 {
 static const char* StructureFieldName = "structure";
@@ -215,6 +222,7 @@ static const char* CompositeIndexFieldName = "compositeIndex";
 static const char* BuildingMaterialIndexFieldName = "buildingMaterialIndex";
 }
 
+
 namespace Room
 {
 static const char* NameFieldName = "name";
@@ -224,6 +232,7 @@ static const char* HeightFieldName = "height";
 static const char* AreaFieldName = "area";
 static const char* VolumeFieldName = "volume";
 }
+
 
 namespace Model
 {

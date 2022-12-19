@@ -33,6 +33,8 @@ namespace Archicad.Converters
             objects.Add(archicadObject);
             break;
           case Objects.BuiltElements.Component component:
+
+            // upgrade (if not Archicad object): Objects.BuiltElements.Component --> Objects.BuiltElements.Archicad.ArchicadObject
             var basePoint = (Point)component.basePoint;
             var newObject = new Objects.BuiltElements.Archicad.ArchicadObject(Utils.ScaleToNative(basePoint));
             objects.Add(newObject);
@@ -63,6 +65,12 @@ namespace Archicad.Converters
         @object.displayValue =
           Operations.ModelConverter.MeshesToSpeckle(elementModels.First(e => e.applicationId == @object.applicationId)
             .model);
+
+        // downgrade (always): Objects.BuiltElements.Archicad.ArchicadObject --> Objects.BuiltElements.Component
+        {
+          @object.basePoint = @object.pos;
+        }
+
         objects.Add(@object);
       }
 

@@ -35,13 +35,15 @@ namespace Objects.BuiltElements.Archicad
 {
   public class ArchicadObject : Objects.BuiltElements.Component
   {
+    public Point pos { get; set; }
+
     public ArchicadObject() { }
 
     [SchemaInfo("ArchicadObject", "Creates an Archicad object.", "Archicad", "Structure")]
 
     public ArchicadObject(Point basePoint)
     {
-      this.basePoint = basePoint;
+      this.pos = basePoint;
     }
   }
 }

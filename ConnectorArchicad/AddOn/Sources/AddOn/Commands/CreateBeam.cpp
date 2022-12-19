@@ -418,10 +418,10 @@ static GSErrCode GetBeamFromObjectState (const GS::ObjectState& os, API_Element&
 			}
 		}
 	}
+#pragma endregion
 
 	return NoError;
 }
-#pragma endregion
 
 GS::String CreateBeam::GetName () const
 {

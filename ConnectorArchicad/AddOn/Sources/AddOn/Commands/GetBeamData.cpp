@@ -17,7 +17,7 @@ static GS::ObjectState SerializeBeamType (const API_Element& elem, const API_Ele
 	os.Add (ApplicationIdFieldName, APIGuidToString (elem.beam.head.guid));
 	os.Add (FloorIndexFieldName, elem.beam.head.floorInd);
 
-	double z = Utility::GetStoryLevel (elem.beam.head.floorInd) + elem.beam.offset;
+	double z = Utility::GetStoryLevel (elem.beam.head.floorInd) + elem.beam.level;
 	os.Add (Beam::begC, Objects::Point3D (elem.beam.begC.x, elem.beam.begC.y, z));
 	os.Add (Beam::endC, Objects::Point3D (elem.beam.endC.x, elem.beam.endC.y, z));
 

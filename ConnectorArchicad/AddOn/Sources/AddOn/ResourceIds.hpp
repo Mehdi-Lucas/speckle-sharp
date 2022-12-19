@@ -13,6 +13,7 @@
 #define GetWindowCommandName					"GetWindowData";
 #define GetBeamDataCommandName					"GetBeamData";
 #define GetColumnDataCommandName				"GetColumnData";
+#define GetObjectDataCommandName				"GetObjectData";
 #define GetSlabDataCommandName					"GetSlabData";
 #define GetRoomDataCommandName					"GetRoomData";
 #define GetRoofDataCommandName					"GetRoofData";
