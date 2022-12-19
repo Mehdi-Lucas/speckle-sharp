@@ -8,9 +8,8 @@ using Speckle.Newtonsoft.Json;
 
 namespace Objects.BuiltElements.Revit
 {
-  public class FamilyInstance : Base, IDisplayValue<List<Mesh>>
+  public class FamilyInstance : Component
   {
-    public Point basePoint { get; set; }
     public string family { get; set; }
     public string type { get; set; }
     public string category { get; set; }
@@ -25,9 +24,6 @@ namespace Objects.BuiltElements.Revit
     [DetachProperty]
     public List<Base> elements { get; set; }
     
-    [DetachProperty]
-    public List<Mesh> displayValue { get; set; }
-
     public string units { get; set; }
 
     public FamilyInstance() { }

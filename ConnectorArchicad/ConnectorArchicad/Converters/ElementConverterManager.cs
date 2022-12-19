@@ -17,6 +17,7 @@ using Speckle.Core.Models;
 using Beam = Objects.BuiltElements.Beam;
 using Column = Objects.BuiltElements.Column;
 using Ceiling = Objects.BuiltElements.Ceiling;
+using Component = Objects.BuiltElements.Component;
 using Door = Objects.BuiltElements.Archicad.ArchicadDoor;
 using Floor = Objects.BuiltElements.Floor;
 using Room = Objects.BuiltElements.Archicad.ArchicadRoom;
@@ -147,6 +148,8 @@ namespace Archicad
         return Converters[typeof(Floor)];
       if (elementType.IsSubclassOf(typeof(Objects.BuiltElements.Room)))
         return Converters[typeof(Objects.BuiltElements.Room)];
+      if (elementType.IsSubclassOf(typeof(Objects.BuiltElements.Component)))
+        return Converters[typeof(Objects.BuiltElements.Component)];
 
       return DefaultConverter;
     }
@@ -166,6 +169,7 @@ namespace Archicad
         Mesh _ => true,
         Door => true,
         Window => true,
+        Component => true,
         _ => false
       };
     }
