@@ -2,8 +2,10 @@
 using NUnit.Framework;
 using Speckle.Core.Api;
 using Speckle.Core.Models;
+using Tests;
+using Point = Tests.Point;
 
-namespace Tests
+namespace TestsUnit.SerializerTests
 {
   [TestFixture]
   public class Serialization

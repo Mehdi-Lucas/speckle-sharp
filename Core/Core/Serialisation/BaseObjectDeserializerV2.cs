@@ -275,8 +275,9 @@ namespace Speckle.Core.Serialisation
           }
           else
           {
+            CallSiteCache.SetValue($"DEPRECATED_{entry.Key}", baseObj, entry.Value);
             // Cannot convert the value in the json to the static property type
-            throw new Exception(String.Format("Cannot deserialize {0} to {1}", entry.Value.GetType().FullName, targetValueType.FullName));
+            //throw new Exception(String.Format("Cannot deserialize {0} to {1}", entry.Value.GetType().FullName, targetValueType.FullName));
           }
         }
         else
