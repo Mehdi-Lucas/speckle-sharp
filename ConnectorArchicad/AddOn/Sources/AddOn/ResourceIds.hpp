@@ -25,6 +25,7 @@
 #define CreateWindowCommandName					"CreateWindow";
 #define CreateBeamCommandName					"CreateBeam";
 #define CreateColumnCommandName					"CreateColumn";
+#define CreateObjectCommandName                 "CreateObject";
 #define CreateSlabCommandName					"CreateSlab";
 #define CreateZoneCommandName					"CreateZone";
 
