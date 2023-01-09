@@ -1,8 +1,6 @@
 ﻿using Objects.BuiltElements.Revit;
 using Speckle.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Objects.Utils
 {
@@ -22,14 +20,12 @@ namespace Objects.Utils
       foreach(Parameter p in parameters)
       {
         //if an applicationId is defined (BuiltInName) use that as key, otherwise use the display name
-          var key = string.IsNullOrEmpty(p.applicationInternalName) ? p.name : p.applicationInternalName;
-          if(string.IsNullOrEmpty(key) || @base[key]!=null)
-              continue;
+        var key = string.IsNullOrEmpty(p.applicationInternalName) ? p.name : p.applicationInternalName;
+        if(string.IsNullOrEmpty(key) || @base[key]!=null)
+            continue;
 
-          @base[key] = p;
-
+        @base[key] = p;
       }
-
 
       return @base;
     }

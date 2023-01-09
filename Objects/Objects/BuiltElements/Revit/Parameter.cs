@@ -27,7 +27,6 @@ namespace Objects.BuiltElements.Revit
     /// </summary>
     public bool isTypeParameter { get; set; } = false;
 
-
     public string units { get; set; }
 
     public Parameter() { }
