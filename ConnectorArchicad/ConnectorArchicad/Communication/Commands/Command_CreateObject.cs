@@ -32,7 +32,8 @@ namespace Archicad.Communication.Commands
     {
       foreach (var data in datas)
       {
-        data.displayValue = null;
+        // todo
+        //data.displayValue = null;
         data.basePoint = null;
       }
 

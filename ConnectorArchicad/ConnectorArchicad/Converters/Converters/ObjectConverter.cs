@@ -37,6 +37,10 @@ namespace Archicad.Converters
             // upgrade (if not Archicad object): Objects.BuiltElements.Component --> Objects.BuiltElements.Archicad.ArchicadObject
             var basePoint = (Point)component.basePoint;
             var newObject = new Objects.BuiltElements.Archicad.ArchicadObject(Utils.ScaleToNative(basePoint));
+
+            // todo
+            newObject.displayValue = component.displayValue;
+
             objects.Add(newObject);
             break;
         }
