@@ -10,6 +10,8 @@
 #include "GSUnID.hpp"
 #include "BuiltInLibrary.hpp"
 #include "Folder.hpp"
+#include "Md5.hpp"
+
 
 namespace AddOnCommands
 {
@@ -320,6 +322,12 @@ static GSErrCode GetObjectFromObjectState (const GS::ObjectState& os, API_Elemen
 #else
 	element.header.typeID = API_ObjectID;
 #endif
+	
+	MD5::Generator MD5Generator;
+	MD5Generator.Update ("12123", 5);
+	MD5Generator.Update ("32345", 5);
+	MD5::FingerPrint addOnFingerPrint;
+	MD5Generator.Finish (addOnFingerPrint);
 	
 	CreateLibraryPart ();
 	
