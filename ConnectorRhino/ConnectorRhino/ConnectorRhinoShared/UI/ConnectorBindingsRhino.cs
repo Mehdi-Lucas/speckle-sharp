@@ -778,6 +778,7 @@ namespace SpeckleRhino
             }
             break;
           case RhinoObject o: // this was prbly a block instance, baked during conversion
+            SetUserInfo(obj, o);
             if (parent != null)
               parent.Update(createdId: o.Id.ToString());
             else
@@ -805,11 +806,55 @@ namespace SpeckleRhino
       }
     }
 
+    private void SetUserInfo(Base obj, RhinoObject ro)
+    {
+      // set user strings
+      if (obj[UserStrings] is Base userStrings)
+      {
+        foreach (var member in userStrings.GetMembers(DynamicBaseMemberType.Dynamic))
+        {
+          ro.Attributes.SetUserString(member.Key, member.Value as string);
+        }
+      }
+
+      // set application id
+      try
+      {
+        ro.Attributes.SetUserString(ApplicationIdKey, obj.applicationId);
+      }
+      catch { }
+
+      // set parameters
+      if (obj["parameters"] is Base parameters)
+      {
+        foreach (var member in parameters.GetMembers(DynamicBaseMemberType.Dynamic))
+        {
+          try
+          {
+            ro.Attributes.SetUserString(member.Key, member.Value as string);
+          }
+          catch { }
+        }
+      }
+
+      // set user dictionary
+      if (obj[UserDictionary] is Base userDictionary)
+        ParseDictionaryToArchivable(ro.Attributes.UserDictionary, userDictionary);
+
+      // set object name
+      var name = obj["name"] as string;
+      if (name != null) ro.Attributes.Name = name;
+    }
     private void SetUserInfo(Base obj, ObjectAttributes attributes, ApplicationObject parent = null)
     {
+      // set user strings
       if (obj[UserStrings] is Base userStrings)
+      {
         foreach (var member in userStrings.GetMembers(DynamicBaseMemberType.Dynamic))
+        {
           attributes.SetUserString(member.Key, member.Value as string);
+        }
+      }
 
       // set application id
       var appId = parent != null ? parent.applicationId : obj.applicationId;
@@ -819,9 +864,24 @@ namespace SpeckleRhino
       }
       catch { }
 
+      // set parameters
+      if (obj["parameters"] is Base parameters)
+      {
+        foreach (var member in parameters.GetMembers(DynamicBaseMemberType.Dynamic))
+        {
+          try
+          {
+            attributes.SetUserString(member.Key, member.Value as string);
+          }
+          catch { }
+        }
+      }
+
+      // set user dictionary
       if (obj[UserDictionary] is Base userDictionary)
         ParseDictionaryToArchivable(attributes.UserDictionary, userDictionary);
 
+      // set object name
       var name = obj["name"] as string;
       if (name != null) attributes.Name = name;
     }
