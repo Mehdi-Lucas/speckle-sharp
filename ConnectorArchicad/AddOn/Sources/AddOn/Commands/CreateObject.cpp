@@ -298,7 +298,6 @@ static GSErrCode CreateLibraryPart ()
 
 static GSErrCode CreateNewObject (API_Element& object, API_ElementMemo* memo)
 {
-	CreateLibraryPart ();
 	return ACAPI_Element_Create (&object, memo);
 }
 
@@ -321,6 +320,9 @@ static GSErrCode GetObjectFromObjectState (const GS::ObjectState& os, API_Elemen
 #else
 	element.header.typeID = API_ObjectID;
 #endif
+	
+	CreateLibraryPart ();
+	
 	err = Utility::GetBaseElementData (element, memo);
 	if (err != NoError)
 		return err;
