@@ -35,9 +35,35 @@ namespace Speckle.ConnectorNavisworks.Bindings
           filteredObjects.AddRange(GetObjectsFromClashResults(filter));
           return filteredObjects;
 
+        case "views":
+          filteredObjects.AddRange(GetObjectsFromSavedViewpoint(filter));
+          return filteredObjects;
+
         default:
           return filteredObjects;
       }
+    }
+
+    private static IEnumerable<string> GetObjectsFromSavedViewpoint(ISelectionFilter filter)
+    {
+      // TODO: Handle an amended viewpoint hierarchy. Possibly by adding a GUID to the selected viewpoint if none is set at the point of selection.
+      // comparison can then be made by the GUID if the name and path don't align.
+      // This would be better as both order and name could be changed after a stream state is saved.
+
+      var selection = filter.Selection;
+
+      HashSet<string> uniqueIds = new HashSet<string>();
+
+      // get view
+
+
+
+      // get visible elements in view
+      // get all descendants
+      // return list
+
+      return uniqueIds.ToList();
+
     }
 
     private static IEnumerable<string> GetObjectsFromSelection(ISelectionFilter filter)

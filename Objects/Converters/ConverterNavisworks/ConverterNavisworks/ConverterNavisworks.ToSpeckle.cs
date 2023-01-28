@@ -156,7 +156,7 @@ namespace Objects.Converter.Navisworks
       // is expecting @object to be a pseudoId string
       if (!(@object is string pseudoId)) return false;
 
-      ModelItem item = PointerToModelItem(pseudoId);
+      var item = PointerToModelItem(pseudoId);
 
       return CanConvertToSpeckle(item);
     }
@@ -164,15 +164,11 @@ namespace Objects.Converter.Navisworks
     private static bool CanConvertToSpeckle(ModelItem item)
     {
       // Only Geometry no children
-      if (!item.HasGeometry || item.Children.Any())
-      {
-        return true; 
-      }
+      if (!item.HasGeometry || item.Children.Any()) return true;
 
-      var allowedTypes = PrimitiveTypes.Lines | PrimitiveTypes.Triangles;
+      const PrimitiveTypes allowedTypes = PrimitiveTypes.Lines | PrimitiveTypes.Triangles;
 
       var primitives = item.Geometry.PrimitiveTypes;
-
       var primitiveTypeSupported = (primitives & allowedTypes) == primitives;
 
       return primitiveTypeSupported;
